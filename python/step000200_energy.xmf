@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf xmlns:xi="http://www.w3.org/2003/XInclude" Version="2.2">
+  <Domain>
+    <Grid GridType="Uniform">
+      <Topology TopologyType="3DSMesh" Dimensions="129 33 257"/>
+      <Geometry GeometryType="XYZ">
+        <DataItem Dimensions="1094049 3" NumberType="Float" Precision="8" Format="HDF">step000200_energy.h5:/Block_0_t000000/Geometry/Points</DataItem>
+      </Geometry>
+      <Attribute Name="temperature" Active="1" AttributeType="None" Center="Node">
+        <DataItem Dimensions="129 33 257" NumberType="Float" Precision="8" Format="HDF">step000200_energy.h5:/Block_0_t000000/Node/temperature</DataItem>
+      </Attribute>
+    </Grid>
+  </Domain>
+</Xdmf>

@@ -1,0 +1,36 @@
+1. Run the ptatin model (with SUPG). Dump PVTS files for energy
+
+2. Use convert_pvtu_xdmf.py to concatenate the VTS files into a single h5 container per time step
+
+3. Each generated xdmf->h5 container looks like this
+
+HDF5 "step000200_energy.h5" {
+GROUP "/" {
+   GROUP "Block_0_t000000" {
+      GROUP "Geometry" {
+         DATASET "Points" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 1094049, 3 ) / ( 1094049, 3 ) }
+         }
+      }
+      GROUP "Node" {
+         DATASET "temperature" {
+            DATATYPE  H5T_IEEE_F64LE
+            DATASPACE  SIMPLE { ( 129, 33, 257 ) / ( 129, 33, 257 ) }
+         }
+      }
+   }
+}
+}
+
+4. Run slurp.py to load the h5 container into a numpy array and then emit this as a PETSc Vec. Note that XDMF has a weird labelling of the mesh size. The XDMF file (e.g. )  states
+
+      <Attribute Name="temperature" Active="1" AttributeType="None" Center="Node">
+        <DataItem Dimensions="129 33 257" NumberType="Float" Precision="8" Format="HDF">step000200_energy.h5:/Block_0_t000000/Node/temperature</DataItem>
+      </Attribute>
+
+The actual mesh size contains 257 x 33 129 vertices (in the i, j, k directions respectively).
+
+5. The mesh in the actual ptatin computations evolved via ALE.
+I do not provide the coordinates of the mesh, hence the temperature solution looks a little odd. One can assume the domain has an aspect ratio of 4 x 1 x 2.
+
