@@ -9,6 +9,20 @@ Collection of PETSc vecs to be stacked into a snapshot matrix
 
 
 
+### Compiling 
+
+* Make sure the environment variables `PETSC_DIR` and `PETSC_ARCH` are defined.
+
+* Then execute the following command
+
+* ```
+  make -f $PETSC_DIR/share/petsc/Makefile.user v2m
+  ```
+
+  
+
+
+
 ### Notes
 
 Executing `v2m.app` will collect a set of snapshots (temperature solutions), assemble them into a single PETSc Mat object and write the matrix out into a binary file called `snapshot.pbmat`.
