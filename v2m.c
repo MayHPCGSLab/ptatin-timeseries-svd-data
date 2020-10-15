@@ -1,8 +1,4 @@
 
-/*
- /Users/dmay/software/petsc-3.13.3/arch-gnu-c-debug/bin/mpicc -Wl,-multiply_defined,suppress -Wl,-multiply_defined -Wl,suppress -Wl,-commons,use_dylibs -Wl,-search_paths_first -Wl,-no_compact_unwind -Wl,-multiply_defined,suppress -Wl,-multiply_defined -Wl,suppress -Wl,-commons,use_dylibs -Wl,-search_paths_first -Wl,-no_compact_unwind  -Wall -Wwrite-strings -Wno-strict-aliasing -Wno-unknown-pragmas -fstack-protector -Qunused-arguments -fvisibility=hidden -g3 -Wall -Wwrite-strings -Wno-strict-aliasing -Wno-unknown-pragmas -fstack-protector -Qunused-arguments -fvisibility=hidden -g3  -I/Users/dmay/software/petsc-3.13.3/include -I/Users/dmay/software/petsc-3.13.3/arch-gnu-c-debug/include -I/opt/X11/include      ex1.c  -Wl,-rpath,/Users/dmay/software/petsc-3.13.3/arch-gnu-c-debug/lib -L/Users/dmay/software/petsc-3.13.3/arch-gnu-c-debug/lib -Wl,-rpath,/Users/dmay/software/petsc-3.13.3/arch-gnu-c-debug/lib -L/Users/dmay/software/petsc-3.13.3/arch-gnu-c-debug/lib -Wl,-rpath,/opt/X11/lib -L/opt/X11/lib -lpetsc -lumfpack -lklu -lcholmod -lbtf -lccolamd -lcolamd -lcamd -lamd -lsuitesparseconfig -lX11 -lmetis -ldl -o ex1
-*/
-
 static char help[] = "Load a collection of PETSc vectors and stack them into a tall-skinny matrix\n\n";
 
 #include <petsc.h>
