@@ -54,7 +54,9 @@ for s in range:
   ofilename = "step" + ('%1.6d' % s)  + "_energy.pbvec"
   write_as_petsc_vec(field,ofilename)
 
-  field = fetch_coordinates(filename)
+  _field = fetch_coordinates(filename)
+  field = _field.flatten()
+  _field = []
   ofilename = "step" + ('%1.6d' % s)  + "_coor.pbvec"
   write_as_petsc_vec(field,ofilename)
 
