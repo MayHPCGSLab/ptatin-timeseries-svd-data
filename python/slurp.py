@@ -45,8 +45,8 @@ def write_as_petsc_vec(field,fname):
 #write_as_petsc_vec(field,"svec.pbvec")
 
 
-range = [ 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400 ]
-for s in range:
+steps = [ 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400 ]
+for s in steps:
   filename = "step" + ('%1.6d' % s)  + "_energy.h5"
   _field = fetch_temperature(filename)
   field = _field.flatten()
