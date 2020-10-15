@@ -58,3 +58,26 @@ The solution and true coordinates of the domain for a given time step can be vis
 where `<step>` is an integer. The VTS file generated will be called `step<step>_temperature.vts`.
 
 The function `PetscErrorCode SnapshotMatCreate(Mat *snapshots)` can be re-used in a SLEPc application to directly create and load the snapshot matrix. This might be desired as the binary ouput of tha matrix is signficantly larger than simply the sum of the individual `*.pbvec` files.
+
+
+
+### Reference (reduced) SVD result
+
+The singular values for the full data set are
+
+```
+singular values:
+ [2.22402501e+05 7.79461315e+04 3.24114516e+04 1.74890097e+04
+ 9.56670518e+03 5.36755762e+03 2.99723043e+03 2.06755101e+03
+ 1.31076808e+03 6.93460366e+02 4.35445057e+02 2.90975623e+02
+ 4.17900032e-10]
+```
+
+These can be computed using `python numpy-svd.py`. On Dave's laptop, computing the reduced SVD using `numpy.linalg.svd()` required < 2 seconds.
+
+```
+np.linalg.svd: 1.3746e+00 (sec)
+```
+
+Note that the snapshot matrix was constructed such that it had zero mean. See lines 31-33 of `numpy-svd.py`.
+
