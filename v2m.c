@@ -36,6 +36,55 @@ PetscErrorCode SnapshotView(Vec u,const char suffix[])
   PetscFunctionReturn(0);
 }
 
+PetscErrorCode SnapshotViewFromFile(const char coor_fname[],const char u_fname[],const char suffix[])
+{
+  const PetscInt M = 257;
+  const PetscInt N = 33;
+  const PetscInt P = 129;
+  DM             dm;
+  Vec            u,coor,_u,_coor;
+  PetscViewer    viewer;
+  char           ofile[PETSC_MAX_PATH_LEN];
+  PetscErrorCode ierr;
+  
+  PetscFunctionBegin;
+  PetscPrintf(PETSC_COMM_WORLD,"Loading solution: %s\n",u_fname);
+  ierr = VecCreate(PETSC_COMM_WORLD,&u);CHKERRQ(ierr);
+  ierr = PetscViewerBinaryOpen(PETSC_COMM_WORLD,u_fname,FILE_MODE_READ,&viewer);CHKERRQ(ierr);
+  ierr = VecLoad(u,viewer);CHKERRQ(ierr);
+  ierr = PetscViewerDestroy(&viewer);CHKERRQ(ierr);
+
+  PetscPrintf(PETSC_COMM_WORLD,"Loading coordinates: %s\n",coor_fname);
+  ierr = VecCreate(PETSC_COMM_WORLD,&coor);CHKERRQ(ierr);
+  ierr = PetscViewerBinaryOpen(PETSC_COMM_WORLD,coor_fname,FILE_MODE_READ,&viewer);CHKERRQ(ierr);
+  ierr = VecLoad(coor,viewer);CHKERRQ(ierr);
+  ierr = PetscViewerDestroy(&viewer);CHKERRQ(ierr);
+
+  ierr = DMDACreate3d(PETSC_COMM_WORLD,DM_BOUNDARY_NONE,DM_BOUNDARY_NONE,DM_BOUNDARY_NONE,
+                      DMDA_STENCIL_BOX,M,N,P,PETSC_DECIDE,PETSC_DECIDE,PETSC_DECIDE,
+                      1,1,NULL,NULL,NULL,&dm);CHKERRQ(ierr);
+  ierr = DMSetUp(dm);CHKERRQ(ierr);
+  ierr = DMDASetUniformCoordinates(dm,0.0,1.0,0.0,1.0,0.0,1.0);CHKERRQ(ierr);
+  
+  ierr = DMCreateGlobalVector(dm,&_u);CHKERRQ(ierr);
+  ierr = VecCopy(u,_u);CHKERRQ(ierr);
+
+  ierr = DMGetCoordinates(dm,&_coor);CHKERRQ(ierr);
+  ierr = VecCopy(coor,_coor);CHKERRQ(ierr);
+  
+  PetscSNPrintf(ofile,PETSC_MAX_PATH_LEN-1,"%s.vts",suffix);
+  PetscPrintf(PETSC_COMM_WORLD,"Writing output: %s\n",ofile);
+  ierr = PetscViewerVTKOpen(PETSC_COMM_WORLD,ofile,FILE_MODE_WRITE,&viewer);CHKERRQ(ierr);
+  ierr = VecView(_u,viewer);CHKERRQ(ierr);
+  ierr = PetscViewerDestroy(&viewer);CHKERRQ(ierr);
+  
+  ierr = DMDestroy(&dm);CHKERRQ(ierr);
+  ierr = VecDestroy(&_u);CHKERRQ(ierr);
+  ierr = VecDestroy(&u);CHKERRQ(ierr);
+  ierr = VecDestroy(&coor);CHKERRQ(ierr);
+  PetscFunctionReturn(0);
+}
+
 PetscErrorCode SnapshotMatCreate(Mat *snapshots)
 {
   PetscErrorCode  ierr;
@@ -104,6 +153,8 @@ int main(int argc,char **args)
 {
   PetscErrorCode ierr;
   Mat            S;
+  PetscInt       step = -1;
+  PetscBool      found = PETSC_FALSE;
   
   ierr = PetscInitialize(&argc,&args,(char*)0,help);if (ierr) return ierr;
   
@@ -119,6 +170,19 @@ int main(int argc,char **args)
     ierr = PetscViewerBinaryOpen(PETSC_COMM_WORLD,"snapshot.pbmat",FILE_MODE_WRITE,&viewer);CHKERRQ(ierr);
     ierr = MatView(S,viewer);CHKERRQ(ierr);
     ierr = PetscViewerDestroy(&viewer);CHKERRQ(ierr);
+  }
+  
+  ierr = PetscOptionsGetInt(NULL,NULL,"-solution_view",&step,&found);CHKERRQ(ierr);
+  if (found) {
+    char s_fname[PETSC_MAX_PATH_LEN];
+    char c_fname[PETSC_MAX_PATH_LEN];
+    char ofname[PETSC_MAX_PATH_LEN];
+    
+    PetscSNPrintf(s_fname,PETSC_MAX_PATH_LEN-1,"data/step%1.6d_energy.pbvec",step);
+    PetscSNPrintf(c_fname,PETSC_MAX_PATH_LEN-1,"data/step%1.6d_coor.pbvec",step);
+    PetscSNPrintf(ofname,PETSC_MAX_PATH_LEN-1,"step%d_temperature",step);
+    PetscPrintf(PETSC_COMM_WORLD,"Snapshot to visualize: %d\n",step);
+    ierr = SnapshotViewFromFile(c_fname,s_fname,ofname);CHKERRQ(ierr);
   }
   
   ierr = PetscFinalize();
