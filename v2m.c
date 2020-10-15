@@ -114,7 +114,7 @@ PetscErrorCode SnapshotMatCreate(Mat *snapshots)
     
     if (i == 0) {
       ierr = VecGetSize(u,&m);CHKERRQ(ierr);
-      printf("S: m %d, n %d\n",m,n);
+      PetscPrintf(PETSC_COMM_WORLD,"S: m %d, n %d\n",m,n);
       ierr = MatCreate(PETSC_COMM_WORLD,&S);CHKERRQ(ierr);
       ierr = MatSetSizes(S,PETSC_DECIDE,PETSC_DECIDE,m,n);CHKERRQ(ierr);
       ierr = MatSetType(S,MATDENSE);CHKERRQ(ierr);
