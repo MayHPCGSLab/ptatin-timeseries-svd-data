@@ -12,6 +12,15 @@ def fetch_temperature(fname):
   fin.close()
   return field
 
+def fetch_coordinates(fname):
+  fin = h5.File(fname,'r')
+  
+  dset = fin["Block_0_t000000/Geometry/Points"]
+  field = np.array(dset,'double')
+  print('  *** loaded \"coordinates\" ***')
+  fin.close()
+  return field
+
 def write_as_petsc_vec(field,fname):
   io = pio.PetscBinaryIO()
   vec = field.view(pio.Vec)
@@ -43,5 +52,9 @@ for s in range:
   field = _field.flatten()
   _field = []
   ofilename = "step" + ('%1.6d' % s)  + "_energy.pbvec"
+  write_as_petsc_vec(field,ofilename)
+
+  field = fetch_coordinates(filename)
+  ofilename = "step" + ('%1.6d' % s)  + "_coor.pbvec"
   write_as_petsc_vec(field,ofilename)
 
