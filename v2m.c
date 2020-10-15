@@ -22,7 +22,7 @@ PetscErrorCode SnapshotView(Vec u,const char suffix[])
                       DMDA_STENCIL_BOX,M,N,P,PETSC_DECIDE,PETSC_DECIDE,PETSC_DECIDE,
                       1,1,NULL,NULL,NULL,&dm);CHKERRQ(ierr);
   ierr = DMSetUp(dm);CHKERRQ(ierr);
-  ierr = DMDASetUniformCoordinates(dm,0.0,4.0,-1.0,0.0,0.0,2.0);CHKERRQ(ierr);
+  ierr = DMDASetUniformCoordinates(dm,0.0,12.0,-1.5,0.0,0.0,6.0);CHKERRQ(ierr);
   ierr = DMCreateGlobalVector(dm,&cu);CHKERRQ(ierr);
   ierr = VecCopy(u,cu);CHKERRQ(ierr);
   
