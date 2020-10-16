@@ -11,7 +11,12 @@ File names reflect the timestep each file is associated with.
 
 See file `data/ptatin.options-2020.09.18_23:27:48` for rift model specific information.
 
-
+The model is defined in the following paper
+```
+Le Pourhiet, Laetitia, Dave A. May, Lucas Huille, Louise Watremez, and Sylvie Leroy. 
+"A genetic link between transform and hyper-extended margins." 
+Earth and Planetary Science Letters 465 (2017): 184-192.
+```
 
 ### Dependencies
 
