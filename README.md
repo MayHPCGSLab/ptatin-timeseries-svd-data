@@ -79,5 +79,15 @@ These can be computed using `python numpy-svd.py`. On Dave's laptop, computing t
 np.linalg.svd: 1.3746e+00 (sec)
 ```
 
-Note that the snapshot matrix was constructed such that it had zero mean. See lines 31-33 of `numpy-svd.py`.
+Note that the snapshot matrix was constructed such that it had zero mean. See lines 45-47 of `numpy-svd.py`. If lines 45-47 are commented out, the singular values obtained are
+
+```
+singular values:
+ [3.90129922e+06 2.15015904e+05 7.78146522e+04 3.16355182e+04
+ 1.72906096e+04 9.11472586e+03 5.25599082e+03 2.89014839e+03
+ 2.05205149e+03 1.30710758e+03 6.93455391e+02 4.34965945e+02
+ 2.90971420e+02]
+```
+
+
 
