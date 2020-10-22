@@ -1,8 +1,23 @@
 
+import os, sys
 import numpy as np
 import h5py as h5
-import PetscBinaryIO as pio # This file has been copied from the petsc source tree
 import time
+
+try:
+  import PetscBinaryIO as pio # This file has been copied from the petsc source tree
+except:
+  # Hard wire path before importing PetscBinaryIO
+  cwd = os.getcwd()
+  ppath = os.getenv("PYTHONPATH") # None
+  if ppath is None:
+    os.environ["PYTHONPATH"] = os.path.join(cwd,"python")
+  else:
+    os.environ["PYTHONPATH"] += os.path.join(cwd,"python")
+  sys.path.append(os.path.join(cwd,"python"))
+
+  import PetscBinaryIO as pio # This file has been copied from the petsc source tree
+
 
 def load_petsc_vec(fname):
   io = pio.PetscBinaryIO() # Instantiate a petsc binary loader
